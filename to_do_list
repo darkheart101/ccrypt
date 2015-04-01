@@ -1,0 +1,4 @@
+01/04/15
+
+1. Use getchar() as input function instead of scanf() for choises and encryption key. 
+(http://gd.tuwien.ac.at/languages/c/programming-bbrown/c_055.htm)
