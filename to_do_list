@@ -1,3 +1,6 @@
+07/04/15
+1. Implement the same logic that you've done for the encryption to the decryption choise
+
 01/04/15
 
 1. Use getchar() as input function instead of scanf() for choises and encryption key. 

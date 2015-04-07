@@ -8,9 +8,9 @@ int main(void){
 	int i,j,key,plain_len,choise=0,letter,char_count;
 	char ABC[] = {"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
 	char abc[] = {"abcdefghijklmonpqrstuvwxyz"};
-	char plain[255];
-	char crypto[255];
-	char ch;
+	/*char plain[MAXBUFFERSIZE];*/
+	char crypto[MAXBUFFERSIZE];
+	char ch,key_ch,plain;
 	char buffer[MAXBUFFERSIZE];
 	
 	while(choise <=0 || choise > 3){
@@ -26,50 +26,68 @@ int main(void){
 		buffer[char_count] = 0x00;      /* null terminate buffer */
 		choise = atoi( buffer );
 	}
-	if(choise == 1){
-		printf("Set your key first:\n");
-		scanf("%d",&key);
-		/*
-		while(key<=0){
-			printf("Set your key first (key > 0)\n");
-			scanf("%d",&key);
-		}*/
+	if(choise!=3){
+		key = 0;
+		while(key <= 0){
+			printf("Set your key first:\n");
+			key_ch = getchar();
+			char_count = 0;
+		
+			while( (key_ch != '\n')  &&  (char_count < MAXBUFFERSIZE)) {
+				buffer[char_count++] = key_ch;
+				key_ch = getchar();
+			}
+			buffer[char_count] = 0x00;      /* null terminate buffer */
+			key = atoi( buffer );
+		}
+		
 		key = key % 26;
+
+	}
+	if(choise == 1){
 		
 		printf("\nYour key is: %d",key);
 		printf("\nInsert your plain text:");
-		scanf("%s",plain);
-		plain_len = strlen(plain);
+		
+		plain = getchar();
+		char_count = 0;
 	
-		key = key%26;
-		printf("%d\n",key);
+		while( (plain != '\n')  &&  (char_count < MAXBUFFERSIZE)) {
+			buffer[char_count++] = plain;
+			plain = getchar();
+		}
+		buffer[char_count] = 0x00;   
+		plain_len = strlen(buffer);
 
 		for(i=0;i<plain_len;i++){
-			for(j=0;j<26;j++){
-				if(plain[i] == abc[j]){
-					printf("crypto[%d] = %c\n",i,abc[(j+key)%26]);
-					break;
-				}else if(plain[i] == ABC[j]){
-					printf("crypto[%d] = %c\n",i,ABC[(j+key)%26]);
-					break;
-				}	
+			if(isspace((int)buffer[i])!=0){
+				printf(" ");
+			}
+			else{
+				for(j=0;j<26;j++){
+					if(buffer[i] == abc[j]){
+						printf("%c",abc[(j+key)%26]);
+						break;
+					}else if(buffer[i] == ABC[j]){
+						printf("%c",ABC[(j+key)%26]);
+						break;
+					
+					}
+					if(j == 25){ /*If the plain character is not in the alphabet or is not space then print whatever the plaincharacter is */
+						printf("%c",buffer[i]);
+					}	
+				}
 			}
 		}
 		printf("\n");
 	}
 
 	if(choise == 2){
-		printf("Set your key first:\n");
-		scanf("%d",&key);
-		key = key % 26;
 		printf("\nYour key is: %d",key);
 		printf("\nInsert your cryptic text:");
 		scanf("%s",crypto);
 		plain_len = strlen(crypto);
 	
-		key = key%26;
-		printf("%d\n",key);
-
 		for(i=0;i<plain_len;i++){
 			for(j=0;j<26;j++){
 				letter = (j-key)%26;
@@ -78,7 +96,7 @@ int main(void){
 				if(crypto[i] == abc[j]){
 					printf("plaintext[%d] = %c\n",i,abc[letter]);
 					break;
-				}else if(plain[i] == ABC[j]){
+				}else if(crypto[i] == ABC[j]){
 					printf("plaintext[%d] = %c\n",i,ABC[letter]);
 					break;
 				}	
