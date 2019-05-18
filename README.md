@@ -7,6 +7,5 @@ The encryption step performed by a Caesar cipher is often incorporated as part o
 </p>
 <h2>Installation</h2>
 <code>
-make
-./ccrypt
+make && ./ccrypt
 </code>
